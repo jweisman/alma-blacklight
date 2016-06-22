@@ -4,7 +4,8 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+gem 'sqlite3', :groups => [:development, :test]
+gem 'pg', :group => :production
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -48,10 +49,15 @@ end
 gem 'blacklight', "~> 6.0"
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 
+# needed when running in production?
+gem 'traject', "~> 2.3"
 
-group :development, :test do
+#group :development, :test do
   gem 'solr_wrapper', '>= 0.3'
-end
+#end
 
 gem 'rsolr', '~> 1.0'
 gem 'blacklight-marc', '~> 6.1'
+
+gem 'rest-client'
+gem 'nokogiri'

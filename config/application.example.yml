@@ -1,0 +1,14 @@
+defaults: &defaults
+  apikey: [APIKEY]
+  almaurl: https://api-na.hosted.exlibrisgroup.com/almaws/v1
+  institution: [INSTITUTION]
+  alma: na01
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
