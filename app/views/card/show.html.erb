@@ -1,0 +1,16 @@
+<h2>User details</h2>
+
+  <div class="form-group">
+  	<strong>Name</strong>
+    <p><%= @user["full_name"] %>
+  </div>
+
+  <div class="form-group">
+  	<strong>User Group</strong>
+    <p><%= @user["user_group"]["desc"] %>
+  </div>
+
+  <div class="form-group">
+  	<strong>Email</strong>
+    <p><%= @user["contact_info"]["email"][0]["email_address"] %>
+  </div>

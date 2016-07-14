@@ -5,7 +5,7 @@ module Alma
 	
 # Alma API methods
 
-	def alma_api_get(uri)
+	def self.get(uri)
 		response = 
 		 RestClient.get ENV['almaurl'] + uri,
 				accept: :json, 
@@ -13,7 +13,7 @@ module Alma
 		return JSON.parse(response.body)
 	end
 	
-	def alma_api_put(uri, data)
+	def self.put(uri, data)
 		response =
 		 RestClient.put ENV['almaurl'] + uri,
 		 	data.to_json,
@@ -23,7 +23,7 @@ module Alma
 		return JSON.parse(response.body)		
 	end
 	
-	def alma_api_post(uri, data)
+	def self.post(uri, data)
 		response =
 		 RestClient.post ENV['almaurl'] + uri,
 		 	data.to_json,
@@ -33,14 +33,14 @@ module Alma
 		return JSON.parse(response.body)	
 	end	
 	
-	def alma_api_delete(uri)
+	def self.delete(uri)
 		RestClient.delete ENV['almaurl'] + uri,
 			authorization: 'apikey ' + ENV['apikey']
 	end	
 
 	# Alma helper methods
 
-	def alma_get_bibs_availability(mms_id)
+	def self.get_bibs_availability(mms_id)
 		response = 
 		RestClient.get ENV['almaurl'] + 
 			"/bibs?mms_id=#{mms_id}&expand=p_avail,e_avail,d_avail",

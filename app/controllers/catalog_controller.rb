@@ -201,7 +201,7 @@ class CatalogController < ApplicationController
 
     def availability
         if params[:mms_ids] && !params[:mms_ids].blank?
-            bib = alma_get_bibs_availability(params[:mms_ids]) 
+            bib = Alma.get_bibs_availability(params[:mms_ids]) 
         end
         render json: bib
     end
