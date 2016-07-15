@@ -15,6 +15,17 @@ class User < ActiveRecord::Base
   # user class to get a user-displayable login/identifier for
   # the account.
   def to_s
-    email
+    name
   end
+
+  def self.from_jwt(token)
+    where(uid: token["id"]).first_or_initialize.tap do |user|
+      user.uid = token["id"]
+      user.name = token["name"]
+      user.email = token["email"]
+      user.provider = token["provider"]
+      user.save!
+    end  
+  end
+
 end

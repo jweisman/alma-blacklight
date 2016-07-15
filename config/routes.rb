@@ -10,6 +10,11 @@ Rails.application.routes.draw do
     get :availability
   end
 
+  match 'auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
+  get 'signout', to: 'sessions#destroy', as: 'destroy_user_session'
+  get 'login', to: 'sessions#login', as: 'new_user_session'
+  get 'edit_user_registration', to: 'card#show', as: 'edit_user_registration'
+
   concern :exportable, Blacklight::Routes::Exportable.new
 
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do

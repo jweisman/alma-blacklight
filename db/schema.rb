@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160622082532) do
+ActiveRecord::Schema.define(version: 20160713144145) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -26,6 +26,13 @@ ActiveRecord::Schema.define(version: 20160622082532) do
   add_index "bookmarks", ["document_id"], name: "index_bookmarks_on_document_id"
   add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id"
 
+  create_table "property_bag", force: :cascade do |t|
+    t.string "name"
+    t.string "value"
+  end
+
+  add_index "property_bag", ["name"], name: "index_property_bag_on_name", unique: true
+
   create_table "searches", force: :cascade do |t|
     t.text     "query_params"
     t.integer  "user_id"
@@ -35,5 +42,14 @@ ActiveRecord::Schema.define(version: 20160622082532) do
   end
 
   add_index "searches", ["user_id"], name: "index_searches_on_user_id"
+
+  create_table "users", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "uid"
+    t.string   "provider"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end
