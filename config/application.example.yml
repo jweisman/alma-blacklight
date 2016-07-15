@@ -3,6 +3,9 @@ defaults: &defaults
   almaurl: https://api-na.hosted.exlibrisgroup.com/almaws/v1
   institution: [INSTITUTION]
   alma: na01
+  root_url: [root url]
+  alma_auth_secret: [auth secret for Oauth]
+  SOLR_URL: [solr url]
 
 development:
   <<: *defaults
