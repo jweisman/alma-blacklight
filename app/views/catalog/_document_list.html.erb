@@ -1,0 +1,10 @@
+<% # container for all documents in index list view -%>
+<link href="https://eu-st01.ext.exlibrisgroup.com/delivery/css/alma-delivery.css" media="screen" type="text/css" rel="stylesheet">
+<script src="https://eu-st01.ext.exlibrisgroup.com/delivery/js/alma-delivery.js" type="text/javascript"></script>
+<div id="checking_availability" class="well well-sm" style="display: none">
+  <i class="fa fa-spinner fa-spin"></i> Checking availability ...
+</div>
+<div id="documents" class="documents-<%= document_index_view_type %>">
+  <%= render documents, :as => :document %>
+</div>
+<script>checkAvailability();</script>

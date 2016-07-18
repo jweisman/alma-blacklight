@@ -2,27 +2,33 @@ require 'rest-client'
 require 'nokogiri'
 
 desc "Harvest OAI set 'blacklight' and index in Solr"
-task :harvest_oai => :environment do
+task :oai_harvest => :environment do
 
 	oai_set = 'blacklight'
 
 	log "Starting..."
-	log "Retrieving 'from' time"
 
-	from_time = ''
-	from_time = "&from=#{PropertyBag.get('oai_time')}" if PropertyBag.get('oai_time')
+	from_time = PropertyBag.get('oai_time')
+	log "Set 'from' time to: #{from_time}"
+	from_time = "&from=#{from_time}" if from_time
 
 	# set to date
 	to_time = Time.new.getutc.strftime("%Y-%m-%dT%H:%M:%SZ")
 	log "Set 'to' time to: #{to_time}"
 
-	qs = "?verb=ListRecords&set=#{oai_set}&metadataPrefix=marc21&until=#{to_time}#{from_time}"
+	# recover
+	saved_resumption_token = PropertyBag.get('oai_resumption_token')
+
+	if saved_resumption_token.to_s != ''
+		qs = "?verb=ListRecords&resumptionToken=#{saved_resumption_token}"
+	else
+		qs = "?verb=ListRecords&set=#{oai_set}&metadataPrefix=marc21&until=#{to_time}#{from_time}"
+	end
 
 	begin 
 		resumptionToken = process_oai(ENV["institution"], qs, ENV["alma"])
-		puts "resumption token is nil? #{resumptionToken.nil?}"
-		puts "resumption token is empty? #{resumptionToken == ''}"
-		qs = '?verb=ListRecords&resumptionToken=' + resumptionToken
+		qs = "?verb=ListRecords&resumptionToken=#{resumptionToken}"
+		PropertyBag.set('oai_resumption_token', resumptionToken)
 	end until resumptionToken == ''
 
 	# write to date for next time
@@ -40,8 +46,6 @@ task :get_property, [:name] => :environment do |t, args|
 	puts PropertyBag.get(args[:name])
 end
 
-
-
 def process_oai(inst, qs, alma)
 	oai_base = "https://#{alma}.alma.exlibrisgroup.com/view/oai/#{inst}/request"
 
@@ -50,16 +54,30 @@ def process_oai(inst, qs, alma)
 
 	document = Nokogiri::XML(oai)
 
+	# Handle deleted records
+	deletedRecords = document.xpath('/oai:OAI-PMH/oai:ListRecords/oai:record[oai:header/@status="deleted"]', {'oai' => 'http://www.openarchives.org/OAI/2.0/'})
+	log "Found #{deletedRecords.count} deleted records."
+
+	if deletedRecords.count > 0
+		deletedIds = 
+			deletedRecords.map{ |n| n.at('header/identifier').text.split(':').last }
+
+		deletedRecords.remove
+		puts RestClient.post "#{ENV['SOLR_URL']}/update?commit=true", 
+			"<delete><id>#{deletedIds.join('</id><id>')}</id></delete>", 
+			:content_type => :xml 
+	end
+
+	# Index remaining records
 	recordCount = document.xpath('/oai:OAI-PMH/oai:ListRecords/oai:record', {'oai' => 'http://www.openarchives.org/OAI/2.0/'}).count
 	log "#{recordCount} records retrieved"
 
 	resumptionToken =	document.xpath('/oai:OAI-PMH/oai:ListRecords/oai:resumptionToken', {'oai' => 'http://www.openarchives.org/OAI/2.0/'}).text
-	File.open('oai-resumption.txt', 'a') { |f| f.write(resumptionToken + "\n") }
 
 	if recordCount > 0
 		filename = File.join(Rails.root.join('tmp'), resumptionToken || 'last') + ".xml"
 		File.open(filename, "w+") do |f|
-  		f.write(oai)
+  		f.write(document.to_s)
 		end
 		log "File written. Indexing #{filename}."
 		sh "java -Dsolr.hosturl=#{ENV['SOLR_URL']} -jar #{File.dirname(__FILE__)}/solrmarc/SolrMarc.jar #{File.dirname(__FILE__)}/solrmarc/config.properties #{filename}"

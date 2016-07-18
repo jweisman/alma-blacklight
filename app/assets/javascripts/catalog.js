@@ -1,5 +1,5 @@
-$(document).ready(function() {
-    $(".availability").click(function(e) {
+function checkAvailability() {
+        $(".availability").click(function(e) {
         var i = $(this).parent().siblings("iframe").first();
         i.attr('src',$(this).data('url'));
         $(this).children('.fa').toggleClass("fa-chevron-right fa-chevron-down");
@@ -7,7 +7,7 @@ $(document).ready(function() {
     });
 
     // Check availability for each search result
-    //$('#checking_availability').show();
+    $('#checking_availability').show();
     var mms_ids = $(".documents-list .document").map(function() { 
         return $(this).data('id')
     }).get().join(",");
@@ -32,6 +32,6 @@ $(document).ready(function() {
                     }
                 });
             }
-            //$('#checking_availability').hide();
+            $('#checking_availability').hide();
     });
-});
+}
