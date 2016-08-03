@@ -1,0 +1,27 @@
+<%= render "card_menu" %>
+
+<div class="row-fluid">
+    <div class="span12">
+        <table class="table table-striped">
+            <tr><th>#</th><th>Description</th><th>Amount</th></tr>
+            <% if @fines["total_record_count"] > 0 
+                @fines["fee"].each_with_index do |fine,i| 
+                    if fine["status"] = "ACTIVE" %>
+                        <tr>
+                            <td><%=i+1%></td>
+                            <td><%=fine["type"]["desc"]%></td>
+                            <td><%=number_to_currency(fine["balance"])%></td>
+                        </tr>
+                    <% end              
+                 end %>
+            <% else %>
+                <tr><td colspan="3">No fees found.</td></tr>
+            <% end %>
+             <tr>
+                <td></td>
+                <td><strong>TOTAL FINES & FEES</strong></td>
+                <td><strong><%=number_to_currency(@fines["total_sum"])%></strong></td>
+             </tr>
+        </table>
+    </div>
+</div>

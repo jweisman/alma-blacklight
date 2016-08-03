@@ -15,6 +15,11 @@ Rails.application.routes.draw do
   get 'login', to: 'sessions#login', as: 'new_user_session'
   get 'edit_user_registration', to: 'card#show', as: 'edit_user_registration'
 
+  resource :card, only: [:show], controller: 'card' do
+    get 'fines', on: :collection
+    get 'requests', on: :collection
+  end
+
   concern :exportable, Blacklight::Routes::Exportable.new
 
   resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do

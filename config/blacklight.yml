@@ -13,9 +13,11 @@
 development:
   adapter: solr
   url: <%= ENV['SOLR_URL'] || "http://127.0.0.1:8983/solr/blacklight-core" %>
+  proxy: <%= ENV['FIXIE_URL'] %>
 test: &test
   adapter: solr
   url: <%= "http://127.0.0.1:#{ENV['TEST_JETTY_PORT'] || 8888}/solr/blacklight-core" %>
 production:
   adapter: solr
   url: <%= ENV['SOLR_URL'] || "http://127.0.0.1:8983/solr/blacklight-core" %>
+  proxy: <%= ENV['FIXIE_URL'] %>
