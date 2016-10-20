@@ -1,0 +1,5 @@
+<ul class="nav nav-tabs">
+  <li role="presentation" <%= "class=active" if (controller_name || 'catalog') == 'catalog'%>><%= link_to "Books", search_catalog_path(request.query_parameters)%></li>
+  <li role="presentation" <%= "class=active" if controller_name == 'articles'%>><%= link_to "Articles", search_articles_path(request.query_parameters)%></li>
+</ul>
+<p>&nbsp;</p>

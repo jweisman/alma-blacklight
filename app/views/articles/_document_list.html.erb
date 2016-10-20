@@ -1,0 +1,42 @@
+<div id="documents" class="documents-list">
+	<% @docs.each_with_index do |doc,i| %>
+	  <div class="document blacklight-serial document-position-<%=i%> " data-document-counter="<%=i%>" itemscope itemtype="http://schema.org/Thing" data-id="<%=doc.id%>">
+    <div class="documentHeader row">
+
+      <h3 class="index_title document-title-heading col-md-12">
+        <span class="document-counter"><%=i+1%>.</span>
+        <%=doc.title.html_safe%>
+      </h3>
+
+    </div>
+    <dl class="document-metadata dl-horizontal dl-invert">
+      <% if doc.subtitle %>
+      <dt class="blacklight-sub_title_display">Sub-title:</dt>
+      <dd class="blacklight-sub_title_display"><%=doc.subtitle.html_safe%></dd>
+      <% end %> 
+      <% if doc.publication_title %>
+      <dt class="blacklight-publication_display">Publication:</dt>
+      <dd class="blacklight-publication_display"><%=doc.publication_title%></dd>
+      <% end %>
+      <% if doc.publication_date.text %>
+      <dt class="blacklight-publication_date_display">Publication Date:</dt>
+      <dd class="blacklight-publication_date_display"><%=doc.publication_date.text%></dd>      
+      <% end %>
+      <% if doc.authors.count > 1 %>
+      <dt class="blacklight-authors_display">Authors:</dt>
+      <dd class="blacklight-authors_display"><%=doc.authors.collect(&:fullname).join("; ")%></dd>
+      <% end %>
+      <dt class="blacklight-format">Format:</dt>
+      <dd class="blacklight-format"><%=doc.content_types.join(", ")%></dd>
+    </dl>
+    <% if doc.fulltext %>
+    <div>
+      <p>
+      <a href="<%=openurl_base+doc.open_url%>" class="btn btn-default availability" target="_blank"><i class="fa fa-chevron-right availability"></i> Fulltext</a>
+      </p>  
+      <iframe style="display: none" width=100% height=200 seamless="seamless" frameBorder=0></iframe> 
+    </div>
+    <% end %>    
+  </div>
+  <% end %>
+</div>
