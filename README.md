@@ -9,7 +9,7 @@ This repository builds on a vanilla Blacklight deployment to add features based 
 ## Features
 
 ### Harvest repository
-To populate the Blacklight Solr index, a rake task called `harvest_oai` is provided. The task stores its last run date to enable incremental harvesting.
+To populate the Blacklight Solr index, a rake task called `oai_harvest` is provided. The task stores its last run date to enable incremental harvesting.
 
 ### Real Time Availability
 When search results are displayed, a call to the [Get BIBs](https://developers.exlibrisgroup.com/alma/apis/bibs) Alma REST API is performed with all of the returned document IDs and the `d_avail` flag. Availability is indicated by the color of the physical and online buttons.

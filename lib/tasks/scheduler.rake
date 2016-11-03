@@ -75,9 +75,10 @@ def process_oai(inst, qs, alma)
 	resumptionToken =	document.xpath('/oai:OAI-PMH/oai:ListRecords/oai:resumptionToken', {'oai' => 'http://www.openarchives.org/OAI/2.0/'}).text
 
 	if recordCount > 0
+		template = Nokogiri::XSLT(oai_to_marc)
 		filename = File.join(Rails.root.join('tmp'), resumptionToken || 'last') + ".xml"
 		File.open(filename, "w+") do |f|
-  		f.write(document.to_s)
+  		f.write(template.transform(document).to_s)
 		end
 		log "File written. Indexing #{filename}."
 		sh "java -Dsolr.hosturl=#{ENV['SOLR_URL']} -jar #{File.dirname(__FILE__)}/solrmarc/SolrMarc.jar #{File.dirname(__FILE__)}/solrmarc/config.properties #{filename}"
@@ -93,3 +94,20 @@ def log(msg)
 	true
 end
 
+def oai_to_marc
+	%q(
+	<?xml version="1.0"?>
+		<xsl:stylesheet version="1.0"
+		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+		xmlns:oai="http://www.openarchives.org/OAI/2.0/"
+		xmlns:marc="http://www.loc.gov/MARC21/slim">
+			<xsl:template match="/">
+				<collection>
+				<xsl:for-each select="oai:OAI-PMH/oai:ListRecords/oai:record">
+					<xsl:copy-of select="oai:metadata/marc:record"/>
+				</xsl:for-each>
+			</collection>
+		</xsl:template>
+		</xsl:stylesheet>
+	)
+end
