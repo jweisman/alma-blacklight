@@ -6,6 +6,8 @@ defaults: &defaults
   root_url: [root url]
   alma_auth_secret: [auth secret for Oauth]
   SOLR_URL: [solr url]
+  SUMMON_ACCESS_ID: [summon access id]
+  SUMMON_SECRET_KEY: [summon secret key]  
 
 development:
   <<: *defaults

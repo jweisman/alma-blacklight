@@ -10,6 +10,10 @@ Rails.application.routes.draw do
     get :availability
   end
 
+  resource :articles, only: [:index] do
+    concerns :searchable
+  end
+
   match 'auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
   get 'signout', to: 'sessions#destroy', as: 'destroy_user_session'
   get 'login', to: 'sessions#login', as: 'new_user_session'

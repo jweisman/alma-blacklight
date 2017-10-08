@@ -1,0 +1,18 @@
+<div id="sidebar" class="<%= sidebar_classes %>">
+  <%= render 'search_sidebar' %>
+</div>
+
+<div id="content" class="<%= main_content_classes %>">
+
+	<h2 class="sr-only top-content-title"><%= t('blacklight.search.search_results_header') %></h2>
+
+	<% @page_title = t('blacklight.search.page_title.title', :constraints => render_search_to_page_title(params), :application_name => application_name) %>
+
+	<%= render 'search_header' %>
+
+	<h2 class="sr-only"><%= t('blacklight.search.search_results') %></h2>
+
+	<%= render 'document_list' %>
+
+	<%= render 'results_pagination' %>
+</div>

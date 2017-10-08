@@ -62,3 +62,5 @@ gem 'blacklight-marc', '~> 6.1'
 gem 'rest-client'
 gem 'nokogiri'
 gem 'jwt'
+
+gem 'summon'
