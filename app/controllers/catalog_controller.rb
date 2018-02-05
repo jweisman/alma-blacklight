@@ -4,9 +4,6 @@ class CatalogController < ApplicationController
   include Blacklight::Catalog
   include Blacklight::Marc::Catalog
 
-  include Alma
-
-
   configure_blacklight do |config|
     ## Class for sending and receiving requests from a search index
     # config.repository_class = Blacklight::Solr::Repository
@@ -197,13 +194,9 @@ class CatalogController < ApplicationController
     # Configuration for autocomplete suggestor
     config.autocomplete_enabled = true
     config.autocomplete_path = 'suggest'
+
+    # Remove bookmark action
+    config.index.document_actions.delete(:bookmark)
+
   end
-
-    def availability
-        if params[:mms_ids] && !params[:mms_ids].blank?
-            bib = Alma.get_bibs_availability(params[:mms_ids]) 
-        end
-        render json: bib
-    end
-
 end

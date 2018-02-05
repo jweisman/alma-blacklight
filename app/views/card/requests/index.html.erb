@@ -1,17 +1,21 @@
-<%= render "card_menu" %>
+<%= render "card/card_menu" %>
 
 <div class="row-fluid">
     <div class="span12">
         <table class="table table-striped">
-            <tr><th>#</th><th>Title</th><th>Author</th><th>Pick Up Location</th></tr>
+            <tr><th>#</th><th>Title</th><th>Description</th><th>Pick Up Location</th><th></th></tr>
             <% if @requests["total_record_count"] > 0 
                 @requests["user_request"].each_with_index do |request,i| 
                     if request["request_type"] == "HOLD" %>
                         <tr>
                             <td><%=i+1%></td>
                             <td><%=request["title"]%></td>
-                            <td><%=request["author"]%></td>
+                            <td><%=request["description"]%></td>
                             <td><%=request["pickup_location"]%></td>
+                            <td><%= link_to(request_path(request["request_id"]), class: "btn btn-default", method: :delete) do %>
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                <% end %>
+                            </td>
                         </tr>
                     <% end              
                  end %>

@@ -11,6 +11,8 @@
 // about supported directives.
 //
 //= require jquery
+//= require datatables
+//= require datatables/dataTables.bootstrap
 //= require jquery_ujs
 //= require turbolinks//
 // Required by Blacklight

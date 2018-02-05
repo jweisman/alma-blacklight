@@ -10,6 +10,19 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require datatables/dataTables.bootstrap
  *= require_tree .
  *= require_self
  */
+
+.glyphicon.glyphicon-dot:before {
+    content: "\25cf";
+}
+
+.glyphicon.glyphicon-green {
+	color: green;
+}
+
+.glyphicon.glyphicon-grey {
+	color: grey;
+}

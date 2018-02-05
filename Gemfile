@@ -64,3 +64,5 @@ gem 'nokogiri'
 gem 'jwt'
 
 gem 'summon'
+
+gem 'rails-assets-datatables', source: 'https://rails-assets.org'

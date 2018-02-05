@@ -1,7 +1,7 @@
 <h2>Hi there <%= current_user %></h2>
 <ul class="nav nav-tabs">
   <li role="presentation" <%= "class=active" if action_name == 'show'%>><%= link_to "User details", card_path%></li>
-  <li role="presentation" <%= "class=active" if action_name == 'requests'%>><%= link_to "Requests", requests_card_path%></li>
+  <li role="presentation" <%= "class=active" if controller_name == 'requests'%>><%= link_to "Requests", requests_path%></li>
   <li role="presentation" <%= "class=active" if action_name == 'fines'%>><%= link_to "Fines", fines_card_path%></li>
 </ul>
 <p>&nbsp;</p>

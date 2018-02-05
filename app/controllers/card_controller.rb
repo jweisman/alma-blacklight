@@ -9,8 +9,4 @@ class CardController < ApplicationController
     @fines = Alma.get("/users/#{current_user.uid}/fees")
 	end
 
-	def requests
-  	@requests = Alma.get("/users/#{current_user.uid}/requests")
-  end
-
 end

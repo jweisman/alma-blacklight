@@ -7,8 +7,14 @@ Rails.application.routes.draw do
 
   resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
     concerns :searchable
-    get :availability
   end
+
+  get 'almaws/bibs/availability', to: 'almaws#availability'
+  get 'almaws/bibs/:mms_id', to: 'almaws#bib'
+  get 'almaws/bibs/:mms_id/availability', to: 'almaws#bib_availability'
+  get 'almaws/bibs/:mms_id/holdings/:holding_id/items', to: 'almaws#items'
+  get 'almaws/bibs/:mms_id/request-options', to: 'almaws#request_options'
+  get 'almaws/bibs/:mms_id/requests', to: 'almaws#requests'
 
   resource :articles, only: [:index] do
     concerns :searchable
@@ -20,8 +26,10 @@ Rails.application.routes.draw do
   get 'edit_user_registration', to: 'card#show', as: 'edit_user_registration'
 
   resource :card, only: [:show], controller: 'card' do
-    get 'fines', on: :collection
-    get 'requests', on: :collection
+    collection do
+      get 'fines'
+      resources :requests, only: [:index, :new, :create, :destroy], controller: 'card/requests'
+    end
   end
 
   concern :exportable, Blacklight::Routes::Exportable.new
