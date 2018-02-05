@@ -145,9 +145,11 @@ function checkAvailability() {
                     "render": function( data, type, row, meta ) {
                         if (getTableData(table,'serial')) 
                             return `<a class="btn btn-default btn-sm" href="/card/requests/new?mms_id=${row.bib_data.mms_id}&holding_id=${row.holding_data.holding_id}&item_id=${row.item_data.pid}">Request</a>`;
-                    }
+                    },
+                    "defaultContent": ""
                 }        
-            ]
+            ],
+            "order": [[0, "desc"]]
         }
     }
 
