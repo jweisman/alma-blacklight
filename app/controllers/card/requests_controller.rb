@@ -1,5 +1,6 @@
 class Card::RequestsController < ApplicationController
-	include Alma
+  include Alma
+  before_action :require_valid_user
 
 	def index
   	@requests = Alma.get("/users/#{current_user.uid}/requests")
