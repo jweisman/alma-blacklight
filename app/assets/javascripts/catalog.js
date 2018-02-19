@@ -21,7 +21,7 @@ function checkAvailability() {
     $("tbody").on('click', 'button.items', function() {
         var data = table.row($(this).parents('tr')).data();
         table = initTable($(table.table().node()),
-            data['items_url'], "item", "items");
+            data['items_url'], "data", "items");
 
         $("div.toolbar").html(`<button type="button" class="btn btn-default pull-left">
             <span class="glyphicon glyphicon-chevron-left"></span> Back to locations</button>`);
@@ -119,30 +119,21 @@ function checkAvailability() {
         "items": {
             "columns": [
                 {   "title": "Barcode/Description",
-                    "render": function( data, type, row, meta ) {
-                        if (getTableData(table,'serial')) 
-                            return row.item_data.description;
-                        else return row.item_data.barcode;
-                    }
+                    "orderable": true
                 },
-                {   "title": "Type",
-                    "data": "item_data.physical_material_type.desc"
+                {   "title": "Type", 
+                    "orderable": false
                 },
                 {   "title": "Policy",
-                    "data": "item_data.due_date_policy",
-                    "defaultContent": ""
+                    "orderable": false
                 },
-                {
-                    "title": "",
-                    "render": function( data, type, row, meta ) {
-                        if (getTableData(table,'serial')) 
-                            return `<a class="btn btn-default btn-sm" href="/card/requests/new?mms_id=${row.bib_data.mms_id}&holding_id=${row.holding_data.holding_id}&item_id=${row.item_data.pid}">Request</a>`;
-                    },
-                    "defaultContent": ""
+                {   "title": "",
+                    "orderable": false
                 }        
             ],
             "order": [[0, "desc"]],
-            "dom": '<"toolbar">frtip'
+            "dom": '<"toolbar">frtip',
+            "serverSide": true
         }
     };
 
@@ -182,7 +173,7 @@ function checkAvailability() {
             "pageLength": 5,
             "retrieve": true,
             "language": {
-                "loadingRecords": '<i class="fa fa-spinner fa-spin"></i> Loading...',
+                "processing": '<i class="fa fa-spinner fa-spin"></i> Loading...',
                 "paginate": {
                     "first": '<<',
                     "next": '>',
