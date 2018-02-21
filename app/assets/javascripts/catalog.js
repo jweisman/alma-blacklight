@@ -71,10 +71,11 @@ function checkAvailability() {
                 },
                 {   "title": "Availability",
                     "render": function( data, type, row, meta ) {
-                        var c = row.f-row.g > 0 ? 'green' : 'grey'
+                        var copies = row.f || 0, unavailable = row.g || 0;
+                        var c = copies - unavailable > 0 ? 'green' : 'grey'
                         var resp = `<span class="glyphicon glyphicon-dot glyphicon-${c}"></span> `;
                         return resp + (row.t || row.h || 
-                            `Copies: ${row.f}, Available: ${row.f-row.g}`); 
+                            `Copies: ${copies}, Available: ${copies-unavailable}`); 
                     }
                 },
                 {   "title": "Call Number",
