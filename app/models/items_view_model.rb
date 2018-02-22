@@ -22,8 +22,7 @@ class ItemsViewModel < ApplicationDatatable
 	end
 
 	def count
-		url = "/bibs/#{params[:mms_id]}/holdings/#{params[:holding_id]}/items?limit=0"
-		Alma.get("#{url}&limit=0")["total_record_count"]
+		Alma.get("#{url}limit=0")["total_record_count"]
 	end
 
 	def total_entries

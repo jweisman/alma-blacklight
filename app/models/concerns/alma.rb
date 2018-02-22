@@ -6,7 +6,6 @@ module Alma
 # Alma API methods
 
 	def self.get(uri, format=:json)
-		puts uri
 		execute :get, uri, nil, format
 	end
 
@@ -47,6 +46,7 @@ module Alma
 		}
 
 		begin
+			start_time = Time.now
 			response = RestClient::Request.execute(
 				method: method,
 				url: url(uri),
@@ -62,6 +62,8 @@ module Alma
 				msg = Nokogiri::XML(response.body).at_xpath('/web_service_result/errorList/error/errorMessage')
 			end
 			raise msg
+		ensure
+			Rails.logger.info "Alma HTTP Request- #{method.upcase} #{uri}; #{(Time.now-start_time).in_milliseconds.to_i} ms"
 		end
 	end
 

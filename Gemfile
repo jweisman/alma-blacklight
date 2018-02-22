@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+ruby "~> 2.3.0"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'
@@ -58,6 +59,10 @@ gem 'traject', "~> 2.3"
 
 gem 'rsolr', '~> 1.0'
 gem 'blacklight-marc', '~> 6.1'
+
+# Enable logging on Heroku & specify webserver
+gem 'rails_12factor', group: :production
+gem 'puma'
 
 gem 'rest-client'
 gem 'nokogiri'
