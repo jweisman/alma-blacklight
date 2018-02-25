@@ -19,9 +19,9 @@ function checkAvailability() {
     });
 
     $("tbody").on('click', 'button.items', function() {
-        var data = table.row($(this).parents('tr')).data();
+        var dom = getTableData(table, 'serial') ? 'frtip' : 'rtip';
         table = initTable($(table.table().node()),
-            data['items_url'], "data", "items");
+            $(this).data('url'), "data", "items", dom);
 
         $("div.toolbar").html(`<button type="button" class="btn btn-default pull-left">
             <span class="glyphicon glyphicon-chevron-left"></span> Back to locations</button>`);
@@ -44,7 +44,7 @@ function checkAvailability() {
                 $('#physical-' + mms_id).toggleClass(function() {
                     if (!availability.print.length>0) { 
                         return "disabled";
-                    } else if (availability.print.find(function(e) { return e.e == 'available'} )) { 
+                    } else if (availability.print_available) { 
                         return "btn-default btn-success";
                     } else {
                         return "btn-default btn-warning";
@@ -64,58 +64,20 @@ function checkAvailability() {
     var tableOpts = {
         "locations": {
             "columns": [
-                {   "title": "Location",
-                    "render": function( data, type, row, meta ) {
-                        return `${row.c} - ${row.q}`; 
-                    }
-                },
-                {   "title": "Availability",
-                    "render": function( data, type, row, meta ) {
-                        var copies = row.f || 0, unavailable = row.g || 0;
-                        var c = copies - unavailable > 0 ? 'green' : 'grey'
-                        var resp = `<span class="glyphicon glyphicon-dot glyphicon-${c}"></span> `;
-                        return resp + (row.t || row.h || 
-                            `Copies: ${copies}, Available: ${copies-unavailable}`); 
-                    }
-                },
-                {   "title": "Call Number",
-                    "data": "d" ,
-                    "defaultContent": ""
-                },
-                {
-                    "title": "",
-                    "defaultContent": "<button class='btn btn-default btn-sm items'>Details</button>"
-                }
-            ],
-            "dom": '<"toolbar">rtip'
+                {   "title": "Location" },
+                {   "title": "Availability" },
+                {   "title": "Call Number" },
+                {   "title": "" }
+            ]
         },
         "online": {
             "columns": [
-                {
-                    "title": "Type",
-                    "render": function( data, type, row, meta ) {
-                        return row.digital ? 'Digital' : 'Electronic'; 
-                    }
-                },        
-                {   "title": "Description",
-                    "render": function( data, type, row, meta ) {
-                        return row.digital ? row.e : row.m; 
-                    }
-                },
-                {   "title": "Availability",
-                    "render": function( data, type, row, meta ) {
-                        var resp = `<span class="glyphicon glyphicon-dot glyphicon-green"></span> `;
-                        return resp + (row.s || 'Available');
-                    }
-                },
-                {   "title": "",
-                    "render": function( data, type, row, meta ) {
-                        return `<a class="btn btn-default btn-sm" href="${row.link}" target="_new">View online</a>`;
-                    }
-                }
+                {   "title": "Type" },        
+                {   "title": "Description" },
+                {   "title": "Availability" },
+                {   "title": "" }
             ], 
-            "order": [[0, "desc"], [1, "asc"]],
-            "dom": '<"toolbar">rtip'
+            "order": [[0, "desc"], [1, "asc"]]
         },       
         "items": {
             "columns": [
@@ -133,7 +95,6 @@ function checkAvailability() {
                 }        
             ],
             "order": [[0, "desc"]],
-            "dom": '<"toolbar">frtip',
             "serverSide": true
         }
     };
@@ -167,7 +128,7 @@ function checkAvailability() {
         return table;
     }
 
-    function initTable(elem, url, dataSrc, tabopts) {
+    function initTable(elem, url, dataSrc, tabopts, dom=null) {
         if ($.fn.DataTable.isDataTable(elem)) elem.DataTable().destroy();
         var opts = {
             "processing": true,
@@ -181,7 +142,8 @@ function checkAvailability() {
                     "last": '>>',
                     "previous": '<'
                 }
-            }
+            },
+            "dom": '<"toolbar">' + (dom || 'rtip')
         }
         if (url) opts["ajax"] = { "url": url, "dataSrc": dataSrc }
         else opts["data"] =  dataSrc;

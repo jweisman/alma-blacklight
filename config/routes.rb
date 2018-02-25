@@ -10,9 +10,7 @@ Rails.application.routes.draw do
   end
 
   get 'almaws/bibs/availability', to: 'almaws#availability'
-  get 'almaws/bibs/:mms_id', to: 'almaws#bib'
-  get 'almaws/bibs/:mms_id/availability', to: 'almaws#bib_availability'
-  get 'almaws/bibs/:mms_id/holdings/:holding_id/items', to: 'almaws#items'
+  get 'almaws/bibs/:mms_id/holdings/:holding_id/items', to: 'almaws#items', as: 'almaws_items'
   get 'almaws/bibs/:mms_id/request-options', to: 'almaws#request_options'
   get 'almaws/bibs/:mms_id/requests', to: 'almaws#requests'
 

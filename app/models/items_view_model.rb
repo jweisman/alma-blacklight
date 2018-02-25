@@ -5,7 +5,7 @@ class ItemsViewModel < ApplicationDatatable
 	private
 
 	def data
-		#items["item"]
+		return [] if !items["item"]
 		items["item"].map do |item|
 			[].tap do |column|
 				serial = !item["item_data"]["description"].empty?
@@ -36,7 +36,7 @@ class ItemsViewModel < ApplicationDatatable
 	def fetch_items
 		qs = "limit=#{per_page}&offset=#{page}&"
 		qs += "expand=due_date_policy&user_id=#{params[:user_id]}&"
-		qs += "q=description~#{params[:search][:value]}" if params[:search]
+		qs += "q=description~#{params[:search][:value]}&" if !params[:search][:value].empty?
 		qs += "order_by=#{sort_column}&direction=#{sort_direction}&"
 		items = Alma.get(url + qs)
 	end
