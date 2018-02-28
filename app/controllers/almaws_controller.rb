@@ -1,9 +1,9 @@
 class AlmawsController < ApplicationController
-	include Alma
+  include Alma
 
-	before_action do
-		params.merge!(user_id: current_user.uid) if current_user 
-	end
+  before_action do
+    params.merge!(user_id: current_user.uid) if current_user 
+  end
 
   def availability
     render json: AvailabilityViewModel.new(view_context)
@@ -23,6 +23,6 @@ class AlmawsController < ApplicationController
   end
 
   def requests
-  	render json: Alma.get("/bibs/#{params[:mms_id]}/requests")
+    render json: Alma.get("/bibs/#{params[:mms_id]}/requests")
   end
 end
