@@ -74,7 +74,7 @@ class AvailabilityViewModel
     if digital
       "https://#{ENV['alma']}.alma.exlibrisgroup.com/view/delivery/#{ENV['institution']}/#{get_subfield(node, 'b')}"
     else
-      get_subfield(node, 'u').gsub(/rft.mms_id=(\d*)(&|$)/, "portfolio_pid=#{get_subfield(node, '8')}&force_direct=true&")
+      get_subfield(node, 'u').gsub(/rft.mms_id=(\d*)(&|$)/, "portfolio_pid=#{get_subfield(node, '8')}&Force_direct=true&")
     end
   end
 
