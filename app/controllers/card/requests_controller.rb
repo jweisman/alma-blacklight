@@ -21,9 +21,8 @@ class Card::RequestsController < ApplicationController
         params.slice(:request_type, :pickup_location_type, 
           :pickup_location_library, :comment)
 			redirect_to requests_path, notice: "Your request was successfully created."
-    rescue RestClient::BadRequest => e
-    	msg = JSON.parse(e.response.body)['errorList']['error'][0]["errorMessage"]
-    	redirect_to requests_path, alert: msg
+    rescue Exception => e
+    	redirect_to requests_path, alert: e.message
     end	
   end
 

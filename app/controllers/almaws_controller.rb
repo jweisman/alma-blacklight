@@ -1,31 +1,28 @@
 class AlmawsController < ApplicationController
-	include Alma
-	before_action do
-		params.merge!(user_id: current_user.uid) if current_user 
-	end
+  include Alma
+
+  before_action do
+    params.merge!(user_id: current_user.uid) if current_user 
+  end
 
   def availability
-    render json: Alma.get_bibs_availability(params[:mms_ids]) if 
-    	params[:mms_ids] && !params[:mms_ids].blank?
-  end
-
-  def bib
-		render json: Alma.get_bib(params[:mms_id])
-  end
-
-  def bib_availability
-    render json: Alma.get_bib_availability(params[:mms_id])
+    render json: AvailabilityViewModel.new(view_context)
   end
 
   def items
-  	render json: Alma.get_items(params)
+    render json: ItemsViewModel.new(view_context)
   end
 
   def request_options
-  	render json: Alma.get_request_options(params)
+    opts = Alma.get "/bibs/#{params[:mms_id]}/request-options?user_id=#{params[:user_id]}"
+    # API should return an empty array if no requests are available
+    render json: (opts["request_option"] || [])
+      .select{|o| ["HOLD", "GES"].include? o["type"]["value"]}
+      .each{|o| o["link"] = 
+        Rails.application.routes.url_helpers.new_request_path(mms_id: params[:mms_id], type: o["type"]["value"]) if !o["link"]}
   end
 
   def requests
-  	render json: Alma.get("/bibs/#{params[:mms_id]}/requests")
+    render json: Alma.get("/bibs/#{params[:mms_id]}/requests")
   end
 end
