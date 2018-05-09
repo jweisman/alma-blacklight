@@ -106,10 +106,7 @@ function initLocationsTable(elem) {
     table = initTable(elem, null, data.print, "locations");
     $("div.toolbar").addClass('pull-left');
     if (!getTableData(table, 'serial')) {
-      $("div.toolbar").append('<strong>Requests: <span class="badge"></span></strong>&nbsp;');
-      $.getJSON ( getTableData(table, 'url') + '/requests', function( data ) {
-        $("div.toolbar").find("span.badge").html(data.total_record_count);
-      });
+      $("div.toolbar").append(`<strong>Requests: <span class="badge">${data.requests}</span></strong>&nbsp;`);
       var requestDropdown = $("div.toolbar").append(`
         <div class="btn-group">
           <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -122,7 +119,7 @@ function initLocationsTable(elem) {
       $.getJSON( getTableData(table, 'url') + '/request-options', function( data ) {
         $(requestDropdown).siblings('button').find('i').removeClass('fa-spinner fa-spin')
         $.each( data, function( key, val ) {
-            requestDropdown.append( '<li><a href="' + val.link + '">' + val.type.desc + ' Request</li>' );
+            requestDropdown.append( '<li><a target="request" href="' + val.link + '">' + val.desc + '</li>' );
         });
       });
     }

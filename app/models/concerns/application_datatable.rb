@@ -1,10 +1,4 @@
-class ApplicationDatatable
-  delegate :params, to: :@view
-  delegate :link_to, to: :@view
-
-  def initialize(view)
-    @view = view
-  end
+class ApplicationDatatable < ApplicationViewModel
 
   def as_json(options = {})
     {

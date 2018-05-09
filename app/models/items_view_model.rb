@@ -21,11 +21,11 @@ class ItemsViewModel < ApplicationDatatable
     end
   end
 
-  def count
+  def total_entries
     Alma.get("#{url}limit=0")["total_record_count"]
   end
 
-  def total_entries
+  def count
     items["total_record_count"]
   end
 

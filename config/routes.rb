@@ -12,7 +12,6 @@ Rails.application.routes.draw do
   get 'almaws/bibs/availability', to: 'almaws#availability'
   get 'almaws/bibs/:mms_id/holdings/:holding_id/items', to: 'almaws#items', as: 'almaws_items'
   get 'almaws/bibs/:mms_id/request-options', to: 'almaws#request_options'
-  get 'almaws/bibs/:mms_id/requests', to: 'almaws#requests'
 
   resource :articles, only: [:index] do
     concerns :searchable

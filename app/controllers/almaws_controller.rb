@@ -14,15 +14,6 @@ class AlmawsController < ApplicationController
   end
 
   def request_options
-    opts = Alma.get "/bibs/#{params[:mms_id]}/request-options?user_id=#{params[:user_id]}"
-    # API should return an empty array if no requests are available
-    render json: (opts["request_option"] || [])
-      .select{|o| ["HOLD", "GES"].include? o["type"]["value"]}
-      .each{|o| o["link"] = 
-        Rails.application.routes.url_helpers.new_request_path(mms_id: params[:mms_id], type: o["type"]["value"]) if !o["link"]}
-  end
-
-  def requests
-    render json: Alma.get("/bibs/#{params[:mms_id]}/requests")
+    render json: RequestOptionsViewModel.new(view_context)
   end
 end

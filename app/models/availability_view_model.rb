@@ -1,17 +1,13 @@
-class AvailabilityViewModel
+class AvailabilityViewModel < ApplicationViewModel
   include Alma
-  delegate :params, to: :@view
   delegate :almaws_items_path, to: :@view
 
-  MMS_ID_XPATH = "controlfield[@tag='001']"
-  ONLINE_XPATH = "datafield[@tag='AVE' or @tag='AVD']"
-  PRINT_XPATH = "datafield[@tag='AVA']"
+  MMS_ID_XPATH = "mms_id"
+  ONLINE_XPATH = "record/datafield[@tag='AVE' or @tag='AVD']"
+  PRINT_XPATH = "record/datafield[@tag='AVA']"
   PRINT_AVAILABLE_XPATH = PRINT_XPATH + "/subfield[@code='e' and text()='available']"
   SERIAL_XPATH = PRINT_XPATH + "/subfield[@code='t' or @code='h']"
-
-  def initialize(view)
-    @view = view
-  end 
+  REQUESTS_XPATH = "requests"
 
   def as_json(options = {})
     {}.tap do |avail|
@@ -21,7 +17,8 @@ class AvailabilityViewModel
             online: bib.xpath(ONLINE_XPATH).map{|n| online_avail n},
             print: bib.xpath(PRINT_XPATH).map{|n| print_avail n},
             print_available: bib.xpath(PRINT_AVAILABLE_XPATH).count > 0,
-            serial: bib.xpath(SERIAL_XPATH).count > 0
+            serial: bib.xpath(SERIAL_XPATH).count > 0,
+            requests: bib.at_xpath(REQUESTS_XPATH).text
           }
       }
     end
@@ -34,9 +31,9 @@ class AvailabilityViewModel
   end
 
   def fetch_bibs
-    url = "/bibs?mms_id=#{params[:mms_ids]}&expand=p_avail,e_avail,d_avail"
+    url = "/bibs?mms_id=#{params[:mms_ids]}&expand=p_avail,e_avail,d_avail,requests"
     bibs = Alma.get(url, :xml)
-    bibs.xpath('/bibs/bib/record')
+    bibs.xpath('/bibs/bib')
   end 
 
   def online_avail(node)
@@ -79,8 +76,9 @@ class AvailabilityViewModel
   end
 
   def items_url(node)
+    puts node
     params = { 
-      mms_id: node.xpath('../' + MMS_ID_XPATH).text, 
+      mms_id: node.xpath('../../' + MMS_ID_XPATH).text, 
       holding_id: get_subfield(node, '8').presence || 'ALL'
     }
     if !get_subfield(node, '8').present?
