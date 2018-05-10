@@ -85,10 +85,10 @@ var tableOpts = {
             {   "title": "Barcode/Description",
                 "orderable": true
             },
-            {   "title": "Type", 
+            {   "title": "Policy", 
                 "orderable": false
             },
-            {   "title": "Policy",
+            {   "title": "Type",
                 "orderable": false
             },
             {   "title": "",

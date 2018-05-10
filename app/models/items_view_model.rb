@@ -10,8 +10,9 @@ class ItemsViewModel < ApplicationDatatable
       [].tap do |column|
         serial = !item["item_data"]["description"].empty?
         column << (serial ? item["item_data"]["description"] : item["item_data"]["barcode"])
+        column << item["item_data"]["due_date_policy"] + ' (' +
+          item["item_data"]["base_status"]["desc"] + ')'
         column << item["item_data"]["physical_material_type"]["desc"]
-        column << item["item_data"]["due_date_policy"]
         column << (!serial ? "" : link_to('Request', new_request_path(
             mms_id: item["bib_data"]["mms_id"], 
             holding_id: item["holding_data"]["holding_id"],

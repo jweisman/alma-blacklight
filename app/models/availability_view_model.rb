@@ -76,7 +76,6 @@ class AvailabilityViewModel < ApplicationViewModel
   end
 
   def items_url(node)
-    puts node
     params = { 
       mms_id: node.xpath('../../' + MMS_ID_XPATH).text, 
       holding_id: get_subfield(node, '8').presence || 'ALL'

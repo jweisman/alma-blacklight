@@ -2,6 +2,8 @@ module Alma
 	require 'rest-client'
 	require 'json'
 	require 'nokogiri'
+
+	ALMAWS_ERROR_XPATH = '/xmlns:web_service_result/xmlns:errorList/xmlns:error/xmlns:errorMessage'
 	
 # Alma API methods
 
@@ -56,12 +58,15 @@ module Alma
 			content_type==:json ? 
 				JSON.parse(response.body) : Nokogiri::XML(response.body)
 		rescue RestClient::ExceptionWithResponse => e
-			if content_type == :json
-				msg = JSON.parse(e.response.body)['errorList']['error'][0]["errorMessage"]
-			else
-				msg = Nokogiri::XML(response.body).at_xpath('/web_service_result/errorList/error/errorMessage')
+			begin
+				if content_type == :json
+					msg = JSON.parse(e.response.body)['errorList']['error'][0]["errorMessage"]
+				else
+					msg = Nokogiri::XML(e.response.body).at_xpath(ALMAWS_ERROR_XPATH)
+				end
+			ensure
+				raise msg || "Unable to parse error from Alma (#{e.response.body})"
 			end
-			raise msg
 		ensure
 			Rails.logger.info "Alma HTTP Request- #{method.upcase} #{uri}; #{(Time.now-start_time).in_milliseconds.to_i} ms"
 		end
