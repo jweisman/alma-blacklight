@@ -32,7 +32,7 @@ class RequestOptionsViewModel < ApplicationViewModel
   end
 
   def fetch_request_options
-    Alma.get "/bibs/#{params[:mms_id]}/request-options?user_id=#{params[:user_id]}"
+    Alma.get "/bibs/#{params[:mms_id]}/request-options?user_id=#{params[:user_id]}&consider_dlf=true"
   end 
 
   def request_types 
