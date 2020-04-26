@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
-ruby "~> 2.4.0"
+ruby "2.7.1"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.9'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3', :groups => [:development, :test]
+gem 'sqlite3', '1.3.13', :groups => [:development, :test]
 gem 'pg', '~> 0.21.0', :group => :production
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
@@ -71,3 +71,6 @@ gem 'jwt'
 gem 'summon'
 
 gem 'rails-assets-datatables', source: 'https://rails-assets.org'
+
+# For Ruby >2.6
+gem 'bigdecimal', '1.4.2'
