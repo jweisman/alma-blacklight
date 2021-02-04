@@ -2,6 +2,7 @@ defaults: &defaults
   apikey: [APIKEY]
   almaurl: https://api-na.hosted.exlibrisgroup.com/almaws/v1
   institution: [INSTITUTION]
+  vid: [View ID]
   alma: na01
   root_url: [root url]
   alma_auth_secret: [auth secret for Oauth]

@@ -5,11 +5,8 @@ module CatalogHelper
 		render :partial => 'show_availability', :locals => {:document => document}
 	end
 
-
 	def openurl(mms_id, service='viewit')
-		url = openurl_base + "rfr_id=info:sid/primo.exlibrisgroup.com&u.ignore_date_coverage=true&svc_dat=#{service}&rft.mms_id=#{mms_id}" 
-		url += "&sso=true&token=#{session.id}" if current_user && current_user.provider=='saml'
-		url += "&oauth=true&provider=#{current_user.provider.downcase}" if current_user && ["FACEBOOK", "GOOGLE"].include?(current_user.provider)
+		url = openurl_base + "&u.ignore_date_coverage=true&rft.mms_id=#{mms_id}" 
 		url
 	end
 
