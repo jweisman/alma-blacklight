@@ -1,7 +1,4 @@
 function checkAvailability() {
-    $(".availability").click(function(e) {
-        window.open($(this).data('url'));
-    });
 
     // Check availability for each search result
     $('#checking_availability').show();

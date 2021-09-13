@@ -15,7 +15,7 @@ To populate the Blacklight Solr index, a rake task called `oai_harvest` is provi
 When search results are displayed, a call to the [Get BIBs](https://developers.exlibrisgroup.com/alma/apis/bibs) Alma REST API is performed with all of the returned document IDs and the `d_avail` flag. Availability is indicated by the color of the physical and online buttons.
 
 ### Fulfillment Options
-Fulfillment options (such as location information, request options, full text availability) are provided using the Alma "mash-up". The "mash-up" is integrated directly into the search results and can be accessed by clicking on the availability buttons.
+Fulfillment options (such as location information, request options, full text availability) are provided using the Alma services page. The services page can be accessed by clicking on the availability buttons.
 
 ### Authentication
 This repository is integrated with the Alma Social Authentication feature. Users are taken to the Alma social login screen to authenticate and then redirected back to Blacklight where a user session is created. Once logged in, fulfillment options appropriate to the authenticated user are displayed. Details from Alma are displayed on the user information page.

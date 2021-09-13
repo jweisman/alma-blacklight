@@ -16,7 +16,9 @@ Rails.application.routes.draw do
 
   match 'auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
   get 'signout', to: 'sessions#destroy', as: 'destroy_user_session'
-  get 'login', to: 'sessions#login', as: 'new_user_session'
+  #get 'login', to: 'sessions#login', as: 'new_user_session'
+  get 'login', to: 'sessions#init_saml', as: 'new_user_session'
+  post 'saml/consume', to: 'sessions#consume_saml'
   get 'edit_user_registration', to: 'card#show', as: 'edit_user_registration'
 
   resource :card, only: [:show], controller: 'card' do

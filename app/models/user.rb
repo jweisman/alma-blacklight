@@ -28,4 +28,13 @@ class User < ActiveRecord::Base
     end  
   end
 
+  def self.from_alma(alma_user)
+    where(id: alma_user['primary_id']).first_or_initialize.tap do |user|
+      user.uid = alma_user['primary_id']
+      user.name = alma_user["first_name"] + ' ' + alma_user["last_name"]
+      user.email = alma_user["contact_info"]["email"][0]["email_address"]
+      user.save!
+    end
+  end
+
 end

@@ -67,3 +67,6 @@ gem 'summon'
 
 # For Ruby >2.6
 gem 'bigdecimal', '1.4.2'
+
+# SAML
+gem 'ruby-saml', '~> 1.11.0'
